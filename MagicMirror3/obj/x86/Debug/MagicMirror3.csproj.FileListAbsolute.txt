@@ -1,0 +1,6 @@
+C:\Users\Austin\Documents\Visual Studio 2015\Projects\MagicMirror3\MagicMirror3\bin\x86\Debug\MagicMirror3.exe.config
+C:\Users\Austin\Documents\Visual Studio 2015\Projects\MagicMirror3\MagicMirror3\bin\x86\Debug\MagicMirror3.exe
+C:\Users\Austin\Documents\Visual Studio 2015\Projects\MagicMirror3\MagicMirror3\bin\x86\Debug\MagicMirror3.pdb
+C:\Users\Austin\Documents\Visual Studio 2015\Projects\MagicMirror3\MagicMirror3\obj\x86\Debug\MagicMirror3.exe
+C:\Users\Austin\Documents\Visual Studio 2015\Projects\MagicMirror3\MagicMirror3\obj\x86\Debug\MagicMirror3.pdb
+C:\Users\Austin\Documents\Visual Studio 2015\Projects\MagicMirror3\MagicMirror3\obj\x86\Debug\MagicMirror3.csprojResolveAssemblyReference.cache
