@@ -1,25 +1,25 @@
 /* 
- * DoorSensor.cs
+ * WindowSensor.cs
  * 
  * Author: Austin Atteberry
  * 
- * Description: Defines the DoorSensor class, which
+ * Description: Defines the WindowSensor class, which
  *              implements the Sensor interface
  * 
  */
 
 namespace RaspberryPi.Sensors
-{
-	public class DoorSensor : Sensor
+ {
+	public class WindowSensor : Sensor
     {
         private int PinNumber;
         private bool Initialized;
 
         /// <summary>
-        /// Creates a new door sensor instance
+        /// Creates a new window sensor instance
         /// </summary>
-        /// <param name="PinNumber">wiringPi pin number of door sensor</param>
-		public DoorSensor(int PinNumber)
+        /// <param name="PinNumber">wiringPi pin number of window sensor</param>
+		public WindowSensor(int PinNumber)
         {
             this.PinNumber = PinNumber;    // Save pin number
             this.Initialized = false;      // Set initialization state
@@ -27,7 +27,7 @@ namespace RaspberryPi.Sensors
         }
 
         /// <summary>
-        /// Initializes the door sensor pin
+        /// Initializes the window sensor pin
         /// </summary>
         public void InitializeSensor()
         {
@@ -39,9 +39,9 @@ namespace RaspberryPi.Sensors
         }
 
         /// <summary>
-        /// Polls the door sensor
+        /// Polls the window sensor
         /// </summary>
-        /// <returns>false if door is closed, true otherwise</returns>
+        /// <returns>false if window is closed, true otherwise</returns>
         public bool PollSensor()
         {
             if (WiringPi.Core.digitalRead(this.PinNumber) == 1)
@@ -53,7 +53,7 @@ namespace RaspberryPi.Sensors
         }
 
         /// <summary>
-        /// Sets the door sensor's pin number
+        /// Sets the window sensor's pin number
         /// </summary>
         /// <param name="PinNumber">wiringPi pin number</param>
         public void SetPinNumber(int PinNumber)
@@ -64,7 +64,7 @@ namespace RaspberryPi.Sensors
         }
 
         /// <summary>
-        /// Gets the door sensor's pin number
+        /// Gets the window sensor's pin number
         /// </summary>
         /// <returns>The pin number</returns>
         public int GetPinNumber()
@@ -72,4 +72,4 @@ namespace RaspberryPi.Sensors
             return this.PinNumber;
         }
     }
-}
+ }
