@@ -29,6 +29,7 @@ namespace GUI
         private System.Windows.Forms.Control[] CtlMain;
         private int NewsCount;
         private int EventCount;
+        private bool ScreenStatus;
         private bool[] SensorStatus;
 
         public Display()
@@ -76,6 +77,9 @@ namespace GUI
         /* Initializes the hardware interrupts */
         private void Interrupts_Initialize()
         {
+            /* Initialize screen status */
+            this.ScreenStatus = true;
+
             /* Initialize button pins */
             WiringPi.Core.pinMode(RaspberryPi.Pins.PIN_38, WiringPi.Constants.INPUT);    // Reset button
             WiringPi.Core.pinMode(RaspberryPi.Pins.PIN_40, WiringPi.Constants.INPUT);    // Screen on/off button

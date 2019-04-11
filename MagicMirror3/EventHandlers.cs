@@ -147,13 +147,88 @@ namespace GUI
         /* Handles the reset button event */
         private void ResetButton_Triggered()
         {
+            int Debounce = 0;
 
+            /* Debounce the button to prevent transient voltage from resetting device */
+            while (WiringPi.Core.digitalRead(RaspberryPi.Pins.PIN_38) == WiringPi.Constants.HIGH)
+            {
+                Debounce++;
+
+                if (Debounce >= 700)
+                {
+                    System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo()
+                    {
+                        FileName = "sudo",
+                        Arguments = "reboot"
+                    });
+                }
+            }
         }
 
         /* Handles the screen on/off button event */
         private void ScreenButton_Triggered()
         {
+            int Debounce = 0;
 
+            /* Debounce the button to prevent transient voltage from turning off screen */
+            while (WiringPi.Core.digitalRead(RaspberryPi.Pins.PIN_40) == WiringPi.Constants.HIGH)
+            {
+                Debounce++;
+
+                if (Debounce >= 700)
+                {
+                    if (this.ScreenStatus)
+                    {
+                        this.ScreenStatus = false;
+                        this.PicWeather.Visible = false;
+
+                        for (int n = 0; n < this.LblDateTime.Length; n++)
+                        {
+                            this.LblDateTime[n].Visible = false;
+                        }
+
+                        for (int n = 0; n < this.LblWeather.Length; n++)
+                        {
+                            this.LblWeather[n].Visible = false;
+                        }
+
+                        for (int n = 0; n < this.LblNews.Length; n++)
+                        {
+                            this.LblNews[n].Visible = false;
+                        }
+
+                        for (int n = 0; n < this.PicSensor.Length; n++)
+                        {
+                            this.PicSensor[n].Visible = false;
+                        }
+                    }
+                    else
+                    {
+                        this.ScreenStatus = true;
+                        this.PicWeather.Visible = true;
+
+                        for (int n = 0; n < this.LblDateTime.Length; n++)
+                        {
+                            this.LblDateTime[n].Visible = true;
+                        }
+
+                        for (int n = 0; n < this.LblWeather.Length; n++)
+                        {
+                            this.LblWeather[n].Visible = true;
+                        }
+
+                        for (int n = 0; n < this.LblNews.Length; n++)
+                        {
+                            this.LblNews[n].Visible = true;
+                        }
+
+                        for (int n = 0; n < this.PicSensor.Length; n++)
+                        {
+                            this.PicSensor[n].Visible = true;
+                        }
+                    }
+                }
+            }
         }
 
         /* Handles the date/time timer elapsed event */
