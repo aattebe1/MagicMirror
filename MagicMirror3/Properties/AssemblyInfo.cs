@@ -19,5 +19,5 @@
 [assembly: System.Resources.NeutralResourcesLanguageAttribute("en-US")]
 [assembly: System.Runtime.InteropServices.ComVisible(false)]
 [assembly: System.Runtime.InteropServices.Guid("5db0e97c-5fa3-40ce-993f-2ae280a41ab4")]
-[assembly: System.Reflection.AssemblyVersion("3.2.14.0")]
-[assembly: System.Reflection.AssemblyFileVersion("3.2.14.0")]
+[assembly: System.Reflection.AssemblyVersion("3.2.17.0")]
+[assembly: System.Reflection.AssemblyFileVersion("3.2.17.0")]
