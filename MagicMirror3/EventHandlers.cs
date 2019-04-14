@@ -173,59 +173,60 @@ namespace GUI
             /* Debounce the button to prevent transient voltage from turning off screen */
             while (WiringPi.Core.digitalRead(RaspberryPi.Pins.PIN_40) == WiringPi.Constants.HIGH)
             {
-                Debounce++;
+                if (Debounce < 2147483647)
+                {
+                    Debounce++;
+                }
 
-                if (Debounce >= 700)
+                if (Debounce >= 10000)
+                {
+                    System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo()
+                    {
+                        FileName = "sudo",
+                        Arguments = "reboot"
+                    });
+                }
+                else if (Debounce >= 700)
                 {
                     if (this.ScreenStatus)
                     {
                         this.ScreenStatus = false;
-                        this.PicWeather.Visible = false;
 
-                        for (int n = 0; n < this.LblDateTime.Length; n++)
-                        {
-                            this.LblDateTime[n].Visible = false;
-                        }
-
-                        for (int n = 0; n < this.LblWeather.Length; n++)
-                        {
-                            this.LblWeather[n].Visible = false;
-                        }
-
-                        for (int n = 0; n < this.LblNews.Length; n++)
-                        {
-                            this.LblNews[n].Visible = false;
-                        }
-
-                        for (int n = 0; n < this.PicSensor.Length; n++)
-                        {
-                            this.PicSensor[n].Visible = false;
-                        }
+                        SetDate_Visibility(false);
+                        SetTime_Visibility(false);
+                        SetCity_Visibility(false);
+                        SetTemperature_Visibility(false);
+                        SetCondition_Visibility(false);
+                        SetConditionImage_Visibility(false);
+                        SetNews1_Visibility(false);
+                        SetNews2_Visibility(false);
+                        SetNews3_Visibility(false);
+                        SetNews4_Visibility(false);
+                        SetNews5_Visibility(false);
+                        SetDoor_Visibility(false);
+                        SetWindow_Visibility(false);
+                        SetMotion_Visibility(false);
+                        SetFire_Visibility(false);
                     }
                     else
                     {
                         this.ScreenStatus = true;
-                        this.PicWeather.Visible = true;
 
-                        for (int n = 0; n < this.LblDateTime.Length; n++)
-                        {
-                            this.LblDateTime[n].Visible = true;
-                        }
-
-                        for (int n = 0; n < this.LblWeather.Length; n++)
-                        {
-                            this.LblWeather[n].Visible = true;
-                        }
-
-                        for (int n = 0; n < this.LblNews.Length; n++)
-                        {
-                            this.LblNews[n].Visible = true;
-                        }
-
-                        for (int n = 0; n < this.PicSensor.Length; n++)
-                        {
-                            this.PicSensor[n].Visible = true;
-                        }
+                        SetDate_Visibility(true);
+                        SetTime_Visibility(true);
+                        SetCity_Visibility(true);
+                        SetTemperature_Visibility(true);
+                        SetCondition_Visibility(true);
+                        SetConditionImage_Visibility(true);
+                        SetNews1_Visibility(true);
+                        SetNews2_Visibility(true);
+                        SetNews3_Visibility(true);
+                        SetNews4_Visibility(true);
+                        SetNews5_Visibility(true);
+                        SetDoor_Visibility(true);
+                        SetWindow_Visibility(true);
+                        SetMotion_Visibility(true);
+                        SetFire_Visibility(true);
                     }
                 }
             }
@@ -234,6 +235,96 @@ namespace GUI
         /* Handles the date/time timer elapsed event */
         private void EventTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
+            /* Check security sensors */
+            if ((!this.SensorStatus[0]) && this.SecuritySensors[0].PollSensor())
+            {
+                /* Door open */
+                this.SetDoor_Image(GUI.Images.SensorImages[1]);
+                WiringPi.Core.digitalWrite(RaspberryPi.Pins.PIN_37, WiringPi.Constants.HIGH);
+                this.SensorStatus[0] = true;
+            }
+            else if (this.SensorStatus[0] && (!this.SecuritySensors[0].PollSensor()))
+            {
+                /* Door closed */
+                this.SetDoor_Image(GUI.Images.SensorImages[0]);
+                WiringPi.Core.digitalWrite(RaspberryPi.Pins.PIN_37, WiringPi.Constants.HIGH);
+                this.SensorStatus[0] = false;
+            }
+
+            if ((!this.SensorStatus[1]) && this.SecuritySensors[1].PollSensor())
+            {
+                /* Door open */
+                this.SetDoor_Image(GUI.Images.SensorImages[1]);
+                WiringPi.Core.digitalWrite(RaspberryPi.Pins.PIN_37, WiringPi.Constants.HIGH);
+                this.SensorStatus[1] = true;
+            }
+            else if (this.SensorStatus[1] && (!this.SecuritySensors[1].PollSensor()))
+            {
+                /* Door closed */
+                this.SetDoor_Image(GUI.Images.SensorImages[0]);
+                WiringPi.Core.digitalWrite(RaspberryPi.Pins.PIN_37, WiringPi.Constants.HIGH);
+                this.SensorStatus[1] = false;
+            }
+
+            if ((!this.SensorStatus[2]) && this.SecuritySensors[2].PollSensor())
+            {
+                /* Window Open */
+                this.SetWindow_Image(GUI.Images.SensorImages[3]);
+                WiringPi.Core.digitalWrite(RaspberryPi.Pins.PIN_37, WiringPi.Constants.HIGH);
+                this.SensorStatus[2] = true;
+            }
+            else if (this.SensorStatus[2] && (!this.SecuritySensors[2].PollSensor()))
+            {
+                /* Window closed */
+                this.SetWindow_Image(GUI.Images.SensorImages[2]);
+                WiringPi.Core.digitalWrite(RaspberryPi.Pins.PIN_37, WiringPi.Constants.HIGH);
+                this.SensorStatus[2] = false;
+            }
+
+            if ((!this.SensorStatus[3]) && this.SecuritySensors[3].PollSensor())
+            {
+                /* Motion detected */
+                this.SetMotion_Image(GUI.Images.SensorImages[5]);
+                WiringPi.Core.digitalWrite(RaspberryPi.Pins.PIN_37, WiringPi.Constants.HIGH);
+                this.SensorStatus[3] = true;
+            }
+            else if (this.SensorStatus[3] && (!this.SecuritySensors[3].PollSensor()))
+            {
+                /* Motion not detected */
+                this.SetMotion_Image(GUI.Images.SensorImages[4]);
+                WiringPi.Core.digitalWrite(RaspberryPi.Pins.PIN_37, WiringPi.Constants.HIGH);
+                this.SensorStatus[3] = false;
+            }
+
+            if ((!this.SensorStatus[4]) && this.SecuritySensors[4].PollSensor())
+            {
+                this.SetMotion_Image(GUI.Images.SensorImages[5]);
+                WiringPi.Core.digitalWrite(RaspberryPi.Pins.PIN_37, WiringPi.Constants.HIGH);
+                this.SensorStatus[4] = true;
+            }
+            else if (this.SensorStatus[4] && (!this.SecuritySensors[4].PollSensor()))
+            {
+                this.SetMotion_Image(GUI.Images.SensorImages[4]);
+                WiringPi.Core.digitalWrite(RaspberryPi.Pins.PIN_37, WiringPi.Constants.HIGH);
+                this.SensorStatus[4] = false;
+            }
+
+            if ((!this.SensorStatus[5]) && this.SecuritySensors[5].PollSensor())
+            {
+                this.SetFire_Image(GUI.Images.SensorImages[7]);
+                WiringPi.Core.digitalWrite(RaspberryPi.Pins.PIN_37, WiringPi.Constants.HIGH);
+                this.SensorStatus[5] = true;
+            }
+            else if (this.SensorStatus[5] && (!this.SecuritySensors[5].PollSensor()))
+            {
+                this.SetFire_Image(GUI.Images.SensorImages[6]);
+                WiringPi.Core.digitalWrite(RaspberryPi.Pins.PIN_37, WiringPi.Constants.HIGH);
+                this.SensorStatus[5] = false;
+            }
+
+            /* Check screen on/off button */
+            ScreenButton_Triggered();
+
             string MonthName = null;    // Name of month
 
             /* Convert month number to name string */
@@ -598,6 +689,272 @@ namespace GUI
             else
             {
                 this.LblNews[4].Size = NewSize;
+            }
+        }
+
+        /* Allows the timer thread to update the door sensor image */
+        private void SetDoor_Image(System.Drawing.Bitmap Image)
+        {
+            if (this.PicSensor[0].InvokeRequired)
+            {
+                SetCallback_Image Callback = new SetCallback_Image(SetDoor_Image);
+                this.Invoke(Callback, new object[] { Image });
+            }
+            else
+            {
+                this.PicSensor[0].Image = Image;
+            }
+        }
+
+        /* Allows the timer thread to update the window sensor image */
+        private void SetWindow_Image(System.Drawing.Bitmap Image)
+        {
+            if (this.PicSensor[1].InvokeRequired)
+            {
+                SetCallback_Image Callback = new SetCallback_Image(SetWindow_Image);
+                this.Invoke(Callback, new object[] { Image });
+            }
+            else
+            {
+                this.PicSensor[1].Image = Image;
+            }
+        }
+
+        /* Allows the timer thread to update the motion sensor image */
+        private void SetMotion_Image(System.Drawing.Bitmap Image)
+        {
+            if (this.PicSensor[2].InvokeRequired)
+            {
+                SetCallback_Image Callback = new SetCallback_Image(SetMotion_Image);
+                this.Invoke(Callback, new object[] { Image });
+            }
+            else
+            {
+                this.PicSensor[2].Image = Image;
+            }
+        }
+
+        /* Allows the timer thread to update the fire sensor image */
+        private void SetFire_Image(System.Drawing.Bitmap Image)
+        {
+            if (this.PicSensor[3].InvokeRequired)
+            {
+                SetCallback_Image Callback = new SetCallback_Image(SetFire_Image);
+                this.Invoke(Callback, new object[] { Image });
+            }
+            else
+            {
+                this.PicSensor[3].Image = Image;
+            }
+        }
+
+        /* Allows the timer thread to change the date's visibility */
+        private void SetDate_Visibility(bool Value)
+        {
+            if (this.LblDateTime[0].InvokeRequired)
+            {
+                SetCallback_bool Callback = new SetCallback_bool(SetDate_Visibility);
+                this.Invoke(Callback, new object[] { Value });
+            }
+            else
+            {
+                this.LblDateTime[0].Visible = Value;
+            }
+        }
+
+        /* Allows the timer thread to change the time's visibility */
+        private void SetTime_Visibility(bool Value)
+        {
+            if (this.LblDateTime[1].InvokeRequired)
+            {
+                SetCallback_bool Callback = new SetCallback_bool(SetTime_Visibility);
+                this.Invoke(Callback, new object[] { Value });
+            }
+            else
+            {
+                this.LblDateTime[1].Visible = Value;
+            }
+        }
+
+        /* Allows the timer thread to change the city's visibility */
+        private void SetCity_Visibility(bool Value)
+        {
+            if (this.LblWeather[0].InvokeRequired)
+            {
+                SetCallback_bool Callback = new SetCallback_bool(SetCity_Visibility);
+                this.Invoke(Callback, new object[] { Value });
+            }
+            else
+            {
+                this.LblWeather[0].Visible = Value;
+            }
+        }
+
+        /* Allows the timer thread to change the temperature's visibility */
+        private void SetTemperature_Visibility(bool Value)
+        {
+            if (this.LblWeather[1].InvokeRequired)
+            {
+                SetCallback_bool Callback = new SetCallback_bool(SetTemperature_Visibility);
+                this.Invoke(Callback, new object[] { Value });
+            }
+            else
+            {
+                this.LblWeather[1].Visible = Value;
+            }
+        }
+
+        /* Allows the timer thread to change the weather conditon's visibility */
+        private void SetCondition_Visibility(bool Value)
+        {
+            if (this.LblWeather[2].InvokeRequired)
+            {
+                SetCallback_bool Callback = new SetCallback_bool(SetCondition_Visibility);
+                this.Invoke(Callback, new object[] { Value });
+            }
+            else
+            {
+                this.LblWeather[2].Visible = Value;
+            }
+        }
+
+        /* Allows the timer thread to change the condition image's visibility */
+        private void SetConditionImage_Visibility(bool Value)
+        {
+            if (this.PicWeather.InvokeRequired)
+            {
+                SetCallback_bool Callback = new SetCallback_bool(SetConditionImage_Visibility);
+                this.Invoke(Callback, new object[] { Value });
+            }
+            else
+            {
+                this.PicWeather.Visible = Value;
+            }
+        }
+
+        /* Allows the timer thread to change the first news label's visibility */
+        private void SetNews1_Visibility(bool Value)
+        {
+            if (this.LblNews[0].InvokeRequired)
+            {
+                SetCallback_bool Callback = new SetCallback_bool(SetNews1_Visibility);
+                this.Invoke(Callback, new object[] { Value });
+            }
+            else
+            {
+                this.LblNews[0].Visible = Value;
+            }
+        }
+
+        /* Allows the timer thread to change the second news label's visibility */
+        private void SetNews2_Visibility(bool Value)
+        {
+            if (this.LblNews[1].InvokeRequired)
+            {
+                SetCallback_bool Callback = new SetCallback_bool(SetNews2_Visibility);
+                this.Invoke(Callback, new object[] { Value });
+            }
+            else
+            {
+                this.LblNews[1].Visible = Value;
+            }
+        }
+
+        /* Allows the timer thread to change the third news label's visibility */
+        private void SetNews3_Visibility(bool Value)
+        {
+            if (this.LblNews[2].InvokeRequired)
+            {
+                SetCallback_bool Callback = new SetCallback_bool(SetNews3_Visibility);
+                this.Invoke(Callback, new object[] { Value });
+            }
+            else
+            {
+                this.LblNews[2].Visible = Value;
+            }
+        }
+
+        /* Allows the timer thread to change the fourth news label's visibility */
+        private void SetNews4_Visibility(bool Value)
+        {
+            if (this.LblNews[3].InvokeRequired)
+            {
+                SetCallback_bool Callback = new SetCallback_bool(SetNews4_Visibility);
+                this.Invoke(Callback, new object[] { Value });
+            }
+            else
+            {
+                this.LblNews[3].Visible = Value;
+            }
+        }
+
+        /* Allows the timer thread to change the fifth news label's visibility */
+        private void SetNews5_Visibility(bool Value)
+        {
+            if (this.LblNews[4].InvokeRequired)
+            {
+                SetCallback_bool Callback = new SetCallback_bool(SetNews5_Visibility);
+                this.Invoke(Callback, new object[] { Value });
+            }
+            else
+            {
+                this.LblNews[4].Visible = Value;
+            }
+        }
+
+        /* Allows the timer thread to change the door sensor image's visibility */
+        private void SetDoor_Visibility(bool Value)
+        {
+            if (this.PicSensor[0].InvokeRequired)
+            {
+                SetCallback_bool Callback = new SetCallback_bool(SetDoor_Visibility);
+                this.Invoke(Callback, new object[] { Value });
+            }
+            else
+            {
+                this.PicSensor[0].Visible = Value;
+            }
+        }
+
+        /* Allows the timer thread to change the window sensor image's visibility */
+        private void SetWindow_Visibility(bool Value)
+        {
+            if (this.PicSensor[1].InvokeRequired)
+            {
+                SetCallback_bool Callback = new SetCallback_bool(SetWindow_Visibility);
+                this.Invoke(Callback, new object[] { Value });
+            }
+            else
+            {
+                this.PicSensor[1].Visible = Value;
+            }
+        }
+
+        /* Allows the timer thread to change the motion sensor image's visibility */
+        private void SetMotion_Visibility(bool Value)
+        {
+            if (this.PicSensor[2].InvokeRequired)
+            {
+                SetCallback_bool Callback = new SetCallback_bool(SetMotion_Visibility);
+                this.Invoke(Callback, new object[] { Value });
+            }
+            else
+            {
+                this.PicSensor[2].Visible = Value;
+            }
+        }
+
+        /* Allows the timer thread to change the fire sensor image's visibility */
+        private void SetFire_Visibility(bool Value)
+        {
+            if (this.PicSensor[3].InvokeRequired)
+            {
+                SetCallback_bool Callback = new SetCallback_bool(SetFire_Visibility);
+                this.Invoke(Callback, new object[] { Value });
+            }
+            else
+            {
+                this.PicSensor[3].Visible = Value;
             }
         }
 

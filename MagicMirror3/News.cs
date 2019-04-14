@@ -14,17 +14,17 @@ namespace News
     {
         public static string[] URL = new string[]
         {
-            "http://rss.cnn.com/rss/cnn_topstories.rss",
-            "http://rss.cnn.com/rss/cnn_world.rss",
-            "http://rss.cnn.com/rss/cnn_us.rss",
-            "http://rss.cnn.com/rss/money_latest.rss",
-            "http://rss.cnn.com/rss/cnn_allpolitics.rss",
-            "http://rss.cnn.com/rss/cnn_tech.rss",
-            "http://rss.cnn.com/rss/cnn_health.rss",
-            "http://rss.cnn.com/rss/cnn_showbiz.rss",
-            "http://rss.cnn.com/rss/cnn_travel.rss",
-            "http://rss.cnn.com/rss/cnn_freevideo.rss",
-            "http://rss.cnn.com/rss/cnn_latest.rss"
+            "http://feeds.reuters.com/reuters/topNews",
+            "http://feeds.reuters.com/Reuters/worldNews",
+            "http://feeds.reuters.com/Reuters/domesticNews",
+            "http://feeds.reuters.com/news/wealth",
+            "http://feeds.reuters.com/Reuters/PoliticsNews",
+            "http://feeds.reuters.com/reuters/technologyNews",
+            "http://feeds.reuters.com/reuters/healthNews",
+            "http://feeds.reuters.com/reuters/entertainment",
+            "http://feeds.reuters.com/reuters/businessNews",
+            "http://feeds.reuters.com/reuters/lifestyle",
+            "http://feeds.reuters.com/reuters/peopleNews"
         };
 
         public static string[] XmlFile = new string[]

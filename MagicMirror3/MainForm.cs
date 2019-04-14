@@ -16,6 +16,7 @@ namespace GUI
         delegate void SetCallback_Image(System.Drawing.Bitmap Image);
         delegate void SetCallback_Size(System.Drawing.Size NewSize);
         delegate void SetCallback_Point(System.Drawing.Point NewLocation);
+        delegate void SetCallback_bool(bool Value);
 
         private System.ComponentModel.IContainer components = null;
         private static System.Windows.Forms.Cursor NoCursor = MagicMirror3.Cursor.None();
@@ -36,7 +37,7 @@ namespace GUI
         {
             this.SuspendLayout();
             this.SecuritySensors_Initialize();
-            this.Interrupts_Initialize();
+            //this.Interrupts_Initialize();
             //this.RSS_Initialize();
             this.EventCount_Initialize();
             this.NewsCount_Initialize();
@@ -57,8 +58,15 @@ namespace GUI
         /* Initializes the security sensors */
         private void SecuritySensors_Initialize()
         {
+            /* Initialize screen status */
+            this.ScreenStatus = true;
+
+            /* Initialize button pins */
+            WiringPi.Core.pinMode(RaspberryPi.Pins.PIN_38, WiringPi.Constants.INPUT);    // Reset button
+            WiringPi.Core.pinMode(RaspberryPi.Pins.PIN_40, WiringPi.Constants.INPUT);    // Screen on/off button
+
             /* Initialize status array */
-            this.SensorStatus = new bool[4] { false, false, false, false };
+            this.SensorStatus = new bool[6] { false, false, false, false, false, false };
 
             /* Instantiate door sensors */
             this.SecuritySensors = new RaspberryPi.Sensors.Sensor[6];
@@ -77,13 +85,6 @@ namespace GUI
         /* Initializes the hardware interrupts */
         private void Interrupts_Initialize()
         {
-            /* Initialize screen status */
-            this.ScreenStatus = true;
-
-            /* Initialize button pins */
-            WiringPi.Core.pinMode(RaspberryPi.Pins.PIN_38, WiringPi.Constants.INPUT);    // Reset button
-            WiringPi.Core.pinMode(RaspberryPi.Pins.PIN_40, WiringPi.Constants.INPUT);    // Screen on/off button
-
             /* Set interrupts */
             WiringPi.Interrupts.wiringPiISR(RaspberryPi.Pins.PIN_29, WiringPi.Constants.INT_EDGE_BOTH, this.DoorSensor_Triggered);
             WiringPi.Interrupts.wiringPiISR(RaspberryPi.Pins.PIN_31, WiringPi.Constants.INT_EDGE_BOTH, this.DoorSensor_Triggered);
@@ -445,7 +446,7 @@ namespace GUI
         /* Initializes the program event timer */
         private void EventTimer_Initialize()
         {
-            this.EventTimer = new System.Timers.Timer(500);
+            this.EventTimer = new System.Timers.Timer(250);
             this.EventTimer.Elapsed += EventTimer_Elapsed;
             this.EventTimer.AutoReset = true;
             this.EventTimer.Enabled = true;
