@@ -8,14 +8,14 @@
  * 
  */
 
-namespace MagicMirror3
+namespace MagicMirror
 {
 	public static class Cursor
     {
 		public static System.Windows.Forms.Cursor None()
         {
             System.Reflection.Assembly CursorAssembly = System.Reflection.Assembly.GetExecutingAssembly();
-            return new System.Windows.Forms.Cursor(CursorAssembly.GetManifestResourceStream("MagicMirror3.Cursor.None.cur"));
+            return new System.Windows.Forms.Cursor(CursorAssembly.GetManifestResourceStream("MagicMirror.Cursor.None.cur"));
         }
     }
 }

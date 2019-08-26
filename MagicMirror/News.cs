@@ -14,32 +14,17 @@ namespace News
     {
         public static string[] URL = new string[]
         {
-            "http://feeds.reuters.com/reuters/topNews",
-            "http://feeds.reuters.com/Reuters/worldNews",
-            "http://feeds.reuters.com/Reuters/domesticNews",
-            "http://feeds.reuters.com/news/wealth",
-            "http://feeds.reuters.com/Reuters/PoliticsNews",
-            "http://feeds.reuters.com/reuters/technologyNews",
-            "http://feeds.reuters.com/reuters/healthNews",
-            "http://feeds.reuters.com/reuters/entertainment",
-            "http://feeds.reuters.com/reuters/businessNews",
-            "http://feeds.reuters.com/reuters/lifestyle",
-            "http://feeds.reuters.com/reuters/peopleNews"
-        };
-
-        public static string[] XmlFile = new string[]
-        {
-            "/News/cnn_topstories.rss",
-            "/News/cnn_world.rss",
-            "/News/cnn_us.rss",
-            "/News/money_latest.rss",
-            "/News/cnn_allpolitics.rss",
-            "/News/cnn_tech.rss",
-            "/News/cnn_health.rss",
-            "/News/cnn_showbiz.rss",
-            "/News/cnn_travel.rss",
-            "/News/cnn_freevideo.rss",
-            "/News/cnn_latest.rss"
+            "http://rss.cnn.com/rss/cnn_topstories.rss",
+            "http://rss.cnn.com/rss/cnn_world.rss",
+            "http://rss.cnn.com/rss/cnn_us.rss",
+            "http://rss.cnn.com/rss/money_latest.rss",
+            "http://rss.cnn.com/rss/cnn_allpolitics.rss",
+            "http://rss.cnn.com/rss/cnn_tech.rss",
+            "http://rss.cnn.com/rss/cnn_health.rss",
+            "http://rss.cnn.com/rss/cnn_showbiz.rss",
+            "http://rss.cnn.com/rss/cnn_travel.rss",
+            "http://rss.cnn.com/rss/cnn_freevideo.rss",
+            "http://rss.cnn.com/rss/cnn_latest.rss"
         };
 
         public static string[] GetRss(string Url)
@@ -53,7 +38,6 @@ namespace News
                 using (System.Net.WebClient RssReader = new System.Net.WebClient())
                 {
                     System.Xml.XmlDocument NewsDoc = new System.Xml.XmlDocument();
-                    //NewsDoc.Load(RssReader);
                     NewsDoc.LoadXml(RssReader.DownloadString(Url));
 
                     int n = 0;
